@@ -18,9 +18,18 @@
     <div>
     <h2>Hello.</h2>
 
+    <form>
+        <input placeholder="Search for a user" data-bind="textInput: query">
+    </form>
+
         <ul data-bind="foreach: locationsList">
-            <li data-bind="text: name"></li>
+            <li>
+                <span data-bind="text: name"></span> -
+                <span data-bind="text: address"></span>
+            </li>
         </ul>
+
+        <div data-bind="text: query"></div>
     </div>
 
 

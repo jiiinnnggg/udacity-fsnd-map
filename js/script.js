@@ -1,5 +1,5 @@
 
-var locations = [
+var places = [
 	{
 		name: 'Location 1',
 		address: 'ABC'
@@ -29,11 +29,14 @@ function mapViewModel() {
 	var self = this;
 
 	this.locationsList = ko.observableArray([]);
+	this.query = ko.observable('');
 
-	locations.forEach(function (locationItem){
-		console.log(locationItem.name+' '+locationItem.address);
-		self.locationsList.push( new Location(locationItem) );
+	places.forEach(function(item) {
+		self.locationsList.push( new Location(item) );
+
 	});
+
+
 };
 
 ko.applyBindings(new mapViewModel());
