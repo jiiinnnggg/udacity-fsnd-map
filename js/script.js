@@ -385,7 +385,7 @@ function mapViewModel() {
 		self.locationsList.push( new Location(item) );
 	});
 
-	//generate an array of states based on places
+	//generate an array of states based on places for dropdown
 	var states = [];
 	places.forEach(function(item) {
 		if (states.includes(item.state)) {
@@ -395,17 +395,8 @@ function mapViewModel() {
 	});
 	states.sort();
 
-	var statesDict = [];
-	for (i=0; i<states.length; i++) {
-		statesDict.push({name:states[i]})
-	};
-	console.log(statesDict);
-
-	this.statesList = ko.observableArray([]);
-
-	statesDict.forEach(function(item) {
-		self.statesList.push( new State(item) );
-	});
+	this.statesList = ko.observableArray(states);
+	this.selectedState = ko.observable();
 
 
 	//query data-binds to the search input

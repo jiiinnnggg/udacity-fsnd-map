@@ -23,9 +23,8 @@
     </form>
 
     <br>
-        <select data-bind="foreach: statesList">
-            <option data-bind="text: name"></option>
-        </select>
+        <select data-bind="options: statesList, value: selectedState"></select>
+        <div>You have selected: <span data-bind="text: selectedState"></span></div>
     <br><br>
 
         <ul data-bind="foreach: filteredList">
