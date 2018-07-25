@@ -365,21 +365,51 @@ var places = [
 
 var Location = function(data) {
 	this.name = ko.observable(data.name);
+	this.lat = ko.observable(data.lat);
+	this.lng = ko.observable(data.lng);
 	this.state = ko.observable(data.state);
+}
+
+var State = function(data) {
+	this.name = ko.observable(data.name);
 }
 
 
 function mapViewModel() {
 	var self = this;
 
+	//generate an array of Location ko observables
 	this.locationsList = ko.observableArray([]);
-
-	//query data-binds to the search input
-	this.query = ko.observable('');
-
+	
 	places.forEach(function(item) {
 		self.locationsList.push( new Location(item) );
 	});
+
+	//generate an array of states based on places
+	var states = [];
+	places.forEach(function(item) {
+		if (states.includes(item.state)) {
+		} else {
+			states.push(item.state);
+		}
+	});
+	states.sort();
+
+	var statesDict = [];
+	for (i=0; i<states.length; i++) {
+		statesDict.push({name:states[i]})
+	};
+	console.log(statesDict);
+
+	this.statesList = ko.observableArray([]);
+
+	statesDict.forEach(function(item) {
+		self.statesList.push( new State(item) );
+	});
+
+
+	//query data-binds to the search input
+	this.query = ko.observable('');
 
 	//computed observable for the filtered list
 	this.filteredList = ko.computed(function() {
@@ -396,9 +426,8 @@ function mapViewModel() {
 				}
 			}
 		}
-
 		return result();
-	}, this);
+		}, this);
 
 };
 

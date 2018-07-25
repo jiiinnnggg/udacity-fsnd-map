@@ -23,6 +23,11 @@
     </form>
 
     <br>
+        <ul data-bind="foreach: statesList">
+            <li>
+                <span data-bind="text: name"></span>
+            </li>
+        </ul>
 
         <ul data-bind="foreach: filteredList">
             <li>
