@@ -386,7 +386,7 @@ function mapViewModel() {
 	});
 
 	//generate an array of states based on places for dropdown
-	var states = [];
+	var states = ['(All)'];
 	places.forEach(function(item) {
 		if (states.includes(item.state)) {
 		} else {
@@ -396,27 +396,36 @@ function mapViewModel() {
 	states.sort();
 
 	this.statesList = ko.observableArray(states);
-	this.selectedState = ko.observable();
 
 
 	//query data-binds to the search input
 	this.query = ko.observable('');
+	this.selectedState = ko.observable();
 
 	//computed observable for the filtered list
 	this.filteredList = ko.computed(function() {
 		var result = ko.observableArray([]);
+		var result2 = ko.observableArray([]);
 
-		if (this.query() == '') {
+		if (this.query() == '' && this.selectedState() == '(All)') {
 			result = self.locationsList;
+			return result();
 		} else {
 			for (p in places) {
-				//if query (not case sensitive) is in p.name
-				if (places[p].name.toLowerCase().
+				if (this.selectedState() == '(All)') {
+					if (places[p].name.toLowerCase().
 					indexOf(this.query().toLowerCase()) >= 0) {
-					result.push(places[p]);
+						result.push(places[p]);
+					}
+				} if (this.selectedState() == places[p].state) {
+					if (places[p].name.toLowerCase().
+					indexOf(this.query().toLowerCase()) >= 0) {
+						result.push(places[p]);
+					}
 				}
 			}
 		}
+		
 		return result();
 		}, this);
 
