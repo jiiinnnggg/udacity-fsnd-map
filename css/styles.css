@@ -1,0 +1,11 @@
+#sidebar {
+	padding-top: 20px;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+}

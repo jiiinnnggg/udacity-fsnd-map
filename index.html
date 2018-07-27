@@ -14,28 +14,32 @@
 </head>
 
 <body>
-    <div>
-        <h2>US National Parks</h2>
+    <!-- Sidebar -->
+    <div class="col-2" id="sidebar">
+        <h4>US National Parks</h4>
 
         <form>
-            <input placeholder="Search..." data-bind="textInput: query">
+            <div class="form-group">
+                <input class="form-control"  type="text" placeholder="Search..." data-bind="textInput: query">
+                <hr>
+                <label>Select a state or territory:</label>
+                <select class="form-control" data-bind="options: statesList, value: selectedState"></select>
+            </div>
         </form>
 
-        <br>
-
-        <div>Select a state or territory:
-            <select data-bind="options: statesList, value: selectedState"></select>
+        <div class="list-group" data-bind="foreach: filteredList">
+            <a href="#"><span class="list-group-item list-group-item-action" data-bind="text: name"></span></a>
         </div>
-
-        <br>
-
-        <ul data-bind="foreach: filteredList">
-            <li>
-                <span data-bind="text: name"></span> - 
-                <span data-bind="text: state"></span>
-            </li>
-        </ul>
     </div>
+
+    <!-- Main Page -->
+    <div>
+
+    </div>
+
+
+
+
 
     <script src="js/jquery-3.3.1.slim.min.js"></script>
     <script src="js/popper.min.js"></script>
