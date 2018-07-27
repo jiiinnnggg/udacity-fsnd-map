@@ -3,17 +3,20 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 
     <meta name="Neighborhood Map Project">
 
     <title>Jing - Map Project</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
+    <!-- Map -->
+    <div id="map"></div>
+
     <!-- Sidebar -->
     <div class="col-2" id="sidebar">
         <h4>US National Parks</h4>
@@ -32,13 +35,6 @@
         </div>
     </div>
 
-    <!-- Main Page -->
-    <div>
-
-    </div>
-
-
-
 
 
     <script src="js/jquery-3.3.1.slim.min.js"></script>
@@ -47,5 +43,9 @@
     <script src="js/knockout-3.4.2.js"></script>
     <script src="js/data.js"></script>
     <script src="js/script.js"></script>
+    
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAa60YjfQ8skiVYUcLUI7tVJKTQPsUV_Og&callback=runApp">
+    </script>
 </body>
 </html>

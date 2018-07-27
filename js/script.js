@@ -63,6 +63,18 @@ function mapViewModel() {
 		return result();
 	}, this);
 
+
+	this.initMap = function() {
+		var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: {lat: 40, lng: -95}
+            });
+	};
+
+	this.initMap();
 };
 
-ko.applyBindings(new mapViewModel());
+
+function runApp() {
+	ko.applyBindings(new mapViewModel());
+};
