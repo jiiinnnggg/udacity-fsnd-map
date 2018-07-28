@@ -6,5 +6,46 @@ padding: 0;
 }
 
 #map {
-height: 100%;
+height: calc(100% - 45px);
+}
+
+#sidebar {
+	max-width: 270px;
+	min-width: 270px;
+	min-height: 100vh;
+	max-height: 100vh;
+	padding-right: 2px;
+}
+
+#sidebar.active {
+    margin-left: -270px;
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -270px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+}
+
+#sidebar-top-area {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#search-results {
+	overflow: scroll;
+	min-height: calc(95% - 200px);
+	max-height: calc(95% - 200px);
+}
+
+
+#map-pane {
+	padding: 0px;
+}
+
+#hamburger-icon {
+	height: 25px;
 }

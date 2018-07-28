@@ -14,28 +14,40 @@
 </head>
 
 <body>
-    <!-- Map -->
-    <div id="map"></div>
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <!-- Sidebar -->
+            <div class="col-2" id="sidebar">
+                <div id="sidebar-top-area">
+                    <h4>US National Parks</h4>
+                    <hr>
+                    <form>
+                        <div>
+                            <input type="text" placeholder="Search Name..." data-bind="textInput: query">
+                            <hr>
+                            <label>Select a state or territory:</label>
+                            <select data-bind="options: statesList, value: selectedState"></select>
+                        </div>
+                    </form>
+                    <hr>
+                </div>
 
-    <!-- Sidebar -->
-    <div class="col-2" id="sidebar">
-        <h4>US National Parks</h4>
-
-        <form>
-            <div class="form-group">
-                <input class="form-control"  type="text" placeholder="Search..." data-bind="textInput: query">
-                <hr>
-                <label>Select a state or territory:</label>
-                <select class="form-control" data-bind="options: statesList, value: selectedState"></select>
+                <ul class="list-group" data-bind="foreach: filteredList" id="search-results">
+                    <a href="#"><span data-bind="text: name"></span> (<span data-bind="text: state"></span>)</a>
+                </ul>
             </div>
-        </form>
 
-        <div class="list-group" data-bind="foreach: filteredList">
-            <a href="#"><span class="list-group-item list-group-item-action" data-bind="text: name"></span></a>
+            <!-- Map -->
+            <div class="col" id="map-pane">
+                <nav class="navbar navbar-light bg-light" id="nav-header">
+                    <a href="#">
+                        <img src="img/ham.svg" alt="img" id="hamburger-icon">
+                    </a>
+                </nav>
+                <div id="map"></div>
+            </div>
         </div>
     </div>
-
-
 
     <script src="js/jquery-3.3.1.slim.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -47,5 +59,6 @@
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAa60YjfQ8skiVYUcLUI7tVJKTQPsUV_Og&callback=runApp">
     </script>
+
 </body>
 </html>

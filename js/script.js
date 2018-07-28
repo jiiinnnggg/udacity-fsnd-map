@@ -78,3 +78,11 @@ function mapViewModel() {
 function runApp() {
 	ko.applyBindings(new mapViewModel());
 };
+
+
+// hamburger icon in nav collapses sidebar
+$(document).ready(function () {
+            $('#hamburger-icon').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
