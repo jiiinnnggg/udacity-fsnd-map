@@ -33,12 +33,14 @@ height: calc(100% - 45px);
 #sidebar-top-area {
 	margin-top: 10px;
 	margin-bottom: 10px;
+	padding-right: 10px;
 }
 
 #search-results {
 	overflow: scroll;
 	min-height: calc(95% - 200px);
 	max-height: calc(95% - 200px);
+	font-size: 14px;
 }
 
 

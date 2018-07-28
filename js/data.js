@@ -322,7 +322,7 @@ var places = [
         "name": "Virgin Islands",
         "lat": 18.33,
         "lng": 64.73,
-        "state": "United States Virgin Islands"
+        "state": "U.S. Virgin Islands"
     },
     {
         "name": "Voyageurs",
