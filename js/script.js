@@ -14,13 +14,14 @@ var State = function(data) {
 function mapViewModel() {
 	var self = this;
 
+
 	//generate an array of Location ko observables
 	this.locationsList = ko.observableArray([]);
-	this.locationsMarkers = [];
-	
+	this.locationsMarkers = [];	
 	places.forEach(function(item) {
 		self.locationsList.push( new Location(item) );
 	});
+
 
 	//generate an array of states based on places for dropdown
 	var states = ['(All)'];
@@ -31,8 +32,29 @@ function mapViewModel() {
 		}
 	});
 	states.sort();
-
 	this.statesList = ko.observableArray(states);
+
+
+	// renders the map + markers
+	this.initMap = function() {
+		var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: {lat: 45, lng: -110}
+            });
+		
+		for (i=0; i<places.length; i++) {
+			var placePosition = {lat: places[i].lat*1, lng: -1*places[i].lng};
+			var locationMarker = new google.maps.Marker({
+				map: map,
+				position: placePosition,
+				name: places[i].name,
+			});
+			self.locationsMarkers.push(locationMarker);
+		};
+
+	};
+
+	this.initMap();
 
 
 	//query data-binds to the search input
@@ -45,46 +67,38 @@ function mapViewModel() {
 
 		if (this.query() == '' && this.selectedState() == '(All)') {
 			result = self.locationsList;
+			self.locationsMarkers.forEach(function(item) {
+				item.setVisible(true);
+			});
 		} else {
-			for (p in places) {
+			for (i=0; i<places.length; i++) {
 				if (this.selectedState() == '(All)') {
-					if (places[p].name.toLowerCase().
-					indexOf(this.query().toLowerCase()) >= 0) {
-						result.push(places[p]);
+					if (places[i].name.toLowerCase().
+					includes(this.query().toLowerCase())) {
+						result.push(places[i]);
+						self.locationsMarkers[i].setVisible(true);
+					} else {
+					self.locationsMarkers[i].setVisible(false);
 					}
-				} if (this.selectedState() == places[p].state) {
-					if (places[p].name.toLowerCase().
-					indexOf(this.query().toLowerCase()) >= 0) {
-						result.push(places[p]);
+				} if (this.selectedState() == places[i].state) {
+					if (places[i].name.toLowerCase().
+					includes(this.query().toLowerCase())) {
+						result.push(places[i]);
+						self.locationsMarkers[i].setVisible(true);
+					} else {
+					self.locationsMarkers[i].setVisible(false);
 					}
+				} else {
+					self.locationsMarkers[i].setVisible(false);
 				}
 			}
 		}
-		
+
+		console.log(self.locationsMarkers);
+
 		return result();
 	}, this);
 
-	// renders the map + markers
-	this.initMap = function() {
-		var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 4,
-                center: {lat: 45, lng: -110}
-            });
-		
-		for (i=0; i<places.length; i++) {
-			var placePosition = {lat: places[i].lat*1, lng: -1*places[i].lng};
-			console.log(placePosition);
-			var locationMarker = new google.maps.Marker({
-				map: map,
-				position: placePosition,
-				name: places[i].name,
-			});
-			self.locationsMarkers.push(locationMarker);
-		};
-
-	};
-
-	this.initMap();
 };
 
 
