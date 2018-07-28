@@ -16,6 +16,7 @@ function mapViewModel() {
 
 	//generate an array of Location ko observables
 	this.locationsList = ko.observableArray([]);
+	this.locationsMarkers = [];
 	
 	places.forEach(function(item) {
 		self.locationsList.push( new Location(item) );
@@ -63,12 +64,24 @@ function mapViewModel() {
 		return result();
 	}, this);
 
-
+	// renders the map + markers
 	this.initMap = function() {
 		var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 5,
-                center: {lat: 40, lng: -95}
+                zoom: 4,
+                center: {lat: 45, lng: -110}
             });
+		
+		for (i=0; i<places.length; i++) {
+			var placePosition = {lat: places[i].lat*1, lng: -1*places[i].lng};
+			console.log(placePosition);
+			var locationMarker = new google.maps.Marker({
+				map: map,
+				position: placePosition,
+				name: places[i].name,
+			});
+			self.locationsMarkers.push(locationMarker);
+		};
+
 	};
 
 	this.initMap();
