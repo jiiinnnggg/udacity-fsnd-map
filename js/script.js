@@ -65,37 +65,27 @@ function mapViewModel() {
 	this.filteredList = ko.computed(function() {
 		var result = ko.observableArray([]);
 
-		if (this.query() == '' && this.selectedState() == '(All)') {
-			result = self.locationsList;
-			self.locationsMarkers.forEach(function(item) {
-				item.setVisible(true);
-			});
-		} else {
-			for (i=0; i<places.length; i++) {
-				if (this.selectedState() == '(All)') {
-					if (places[i].name.toLowerCase().
-					includes(this.query().toLowerCase())) {
-						result.push(places[i]);
-						self.locationsMarkers[i].setVisible(true);
-					} else {
+		for (i=0; i<places.length; i++) {
+			if (places[i].state == self.selectedState()) {
+				if (places[i].name.toLowerCase().includes(
+					this.query().toLowerCase())) {
+					result.push(places[i]);
+					self.locationsMarkers[i].setVisible(true);
+				} else {
 					self.locationsMarkers[i].setVisible(false);
 					}
-				} if (this.selectedState() == places[i].state) {
-					if (places[i].name.toLowerCase().
-					includes(this.query().toLowerCase())) {
-						result.push(places[i]);
-						self.locationsMarkers[i].setVisible(true);
-					} else {
-					self.locationsMarkers[i].setVisible(false);
-					}
+			} else if ('(All)' == self.selectedState()) {
+				if (places[i].name.toLowerCase().includes(
+					this.query().toLowerCase())) {
+					result.push(places[i]);
+					self.locationsMarkers[i].setVisible(true);
 				} else {
 					self.locationsMarkers[i].setVisible(false);
 				}
+			} else {
+				self.locationsMarkers[i].setVisible(false);
 			}
 		}
-
-		console.log(self.locationsMarkers);
-
 		return result();
 	}, this);
 
