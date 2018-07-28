@@ -1,3 +1,4 @@
+// source: https://en.wikipedia.org/wiki/List_of_national_parks_of_the_United_States
 
 var places = [
     {
@@ -32,8 +33,8 @@ var places = [
     },
     {
         name: "Biscayne",
-        lat: 25.65,
-        lng: 80.08,
+        lat: 25.48,
+        lng: 80.21,
         state: "Florida"
     },
     {
