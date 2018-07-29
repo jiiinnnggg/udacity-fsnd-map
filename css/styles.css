@@ -3,6 +3,7 @@ body {
 height: 100%;
 margin: 0;
 padding: 0;
+font-family: 'Ubuntu', sans-serif;
 }
 
 #map {
@@ -40,7 +41,7 @@ height: calc(100% - 45px);
 	overflow: scroll;
 	min-height: calc(95% - 200px);
 	max-height: calc(95% - 200px);
-	font-size: 16px;
+	font-size: 14px;
 }
 
 

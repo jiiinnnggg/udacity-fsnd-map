@@ -1,13 +1,10 @@
 
+// the Location function generates a ko observable from data.js item
 var Location = function(data) {
 	this.name = ko.observable(data.name);
 	this.lat = ko.observable(data.lat);
 	this.lng = ko.observable(data.lng);
 	this.state = ko.observable(data.state);
-}
-
-var State = function(data) {
-	this.name = ko.observable(data.name);
 }
 
 
@@ -34,13 +31,12 @@ function mapViewModel() {
 	states.sort();
 	this.statesList = ko.observableArray(states);
 
-	// populates the infowindow for a marker
+	// populates the infowindow + marker, from google maps unit
 	this.populateInfoWindow = function(marker, infowindow) {
 		if (infowindow.marker != marker) {
 			infowindow.setContent('');
-			infowindow.marker = marker;
-			
-			infowindow.setContent('<div>'+marker.name+'</div>');
+			infowindow.marker = marker;			
+			infowindow.setContent('<h6>'+marker.name+' National Park</h6>');
 			infowindow.open(map, marker);
 			infowindow.addListener('closeclick', function() {
 				infowindow.marker = null;
@@ -48,7 +44,7 @@ function mapViewModel() {
 		}
 	};
 
-	// populates a marker for the click listener
+	// KO clicks call populateMarker for the filteredList links	
 	this.populateMarker = function() {
         self.populateInfoWindow(this, self.largeInfoWindow);
         this.setAnimation(google.maps.Animation.DROP);
@@ -79,7 +75,10 @@ function mapViewModel() {
 			});
 			this.locationMarker.setMap(map);
 			self.locationsMarkers.push(this.locationMarker);
-			this.locationMarker.addListener('click', self.populateMarker);
+			this.locationMarker.addListener('click', function() {
+				self.populateInfoWindow(this, self.largeInfoWindow);
+        		this.setAnimation(google.maps.Animation.DROP);
+        	});
 		}
 	};
 	this.initMap();
@@ -115,16 +114,14 @@ function mapViewModel() {
 
 }
 
-
+// google maps callback runs runApp
 function runApp() {
 	ko.applyBindings(new mapViewModel());
 }
 
-
 // hamburger icon in nav collapses sidebar
 $(document).ready(function () {
-            $('#hamburger-icon').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
-        });
-
+    $('#hamburger-icon').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+});

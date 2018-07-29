@@ -9,6 +9,7 @@
 
     <title>Udacity Map Project | US National Parks</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet"> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -22,18 +23,18 @@
                     <h4>US National Parks</h4>
                     <hr>
                     <form class="form-group">
-                        <div>
-                            <input class="form-control" type="text" placeholder="Search Name..." data-bind="textInput: query">
-                            <hr>
-                            <label>Select a state or territory:</label>
-                            <select class="form-control" data-bind="options: statesList, value: selectedState"></select>
-                        </div>
+                        <input class="form-control" type="text" placeholder="Search Name..." data-bind="textInput: query">
+                        <hr>
+                        <label>Select a state or territory:</label>
+                        <select class="form-control" data-bind="options: statesList, value: selectedState"></select>
                     </form>
                     <hr>
                 </div>
 
                 <ul class="list-group" data-bind="foreach: filteredList" id="search-results">
-                    <a href="#"><li data-bind="text: name, click: $parent.populateMarker"></li></a>
+                    <a href="#">
+                        <li class="list-group-item" data-bind="text: name, click: $parent.populateMarker"></li>
+                    </a>
                 </ul>
             </div>
 
