@@ -40,7 +40,7 @@ height: calc(100% - 45px);
 	overflow: scroll;
 	min-height: calc(95% - 200px);
 	max-height: calc(95% - 200px);
-	font-size: 14px;
+	font-size: 16px;
 }
 
 

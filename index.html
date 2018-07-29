@@ -32,9 +32,9 @@
                     <hr>
                 </div>
 
-                <div class="list-group" data-bind="foreach: filteredList" id="search-results">
-                    <a href="#" class="list-group-item list-group-item-action"><span data-bind="text: name"></span> (<span data-bind="text: state"></span>)</a>
-                </div>
+                <ul class="list-group" data-bind="foreach: filteredList" id="search-results">
+                    <a href="#"><li data-bind="text: name, click: $parent.populateMarker"></li></a>
+                </ul>
             </div>
 
             <!-- Map Pane -->
@@ -49,11 +49,12 @@
         </div>
     </div>
 
-    <script src="js/jquery-3.3.1.slim.min.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/knockout-3.4.2.js"></script>
     <script src="js/data.js"></script>
+    <script src="js/mapStyles.js"></script>
     <script src="js/script.js"></script>
     
     <script async defer

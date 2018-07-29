@@ -39,58 +39,69 @@ function mapViewModel() {
 		if (infowindow.marker != marker) {
 			infowindow.setContent('');
 			infowindow.marker = marker;
+			
 			infowindow.setContent('<div>'+marker.name+'</div>');
-			infowindow.addListener('closeclick', function() {
-				infowindow.setMarker(null);
-			});
 			infowindow.open(map, marker);
+			infowindow.addListener('closeclick', function() {
+				infowindow.marker = null;
+			});
 		}
 	};
 
 	// populates a marker for the click listener
 	this.populateMarker = function() {
         self.populateInfoWindow(this, self.largeInfoWindow);
+        this.setAnimation(google.maps.Animation.DROP);
 	};
 
 	// renders the map + markers
 	this.initMap = function() {
 		var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 4,
-                center: {lat: 47, lng: -116}
+                center: {lat: 47, lng: -116},
+                styles: mapStyles
             });
 		
 		this.largeInfoWindow = new google.maps.InfoWindow();
 
 		for (i=0; i<places.length; i++) {
-			this.placePosition = {lat: places[i].lat*1, lng: -1*places[i].lng};
+			var iLat = places[i].lat*1;
+			var iLng = -1*places[i].lng;
+			this.placePosition = {lat: iLat, lng: iLng};
 			this.locationMarker = new google.maps.Marker({
 				map: map,
 				position: this.placePosition,
 				name: places[i].name,
+				state: places[i].state,
+				lat: iLat,
+				lng: iLng,
+				animation: google.maps.Animation.DROP
 			});
 			this.locationMarker.setMap(map);
 			self.locationsMarkers.push(this.locationMarker);
 			this.locationMarker.addListener('click', self.populateMarker);
-		};
+		}
 	};
 	this.initMap();
 
+
 	// query data-binds to the search input
-	this.query = ko.observable('');
-	this.selectedState = ko.observable();
+	self.query = ko.observable('');
+	self.selectedState = ko.observable();
 
 	// computed observable for the filtered list
 	this.filteredList = ko.computed(function() {
 		var result = ko.observableArray([]);
 
-		for (i=0; i<places.length; i++) {
+		for (i=0; i<self.locationsMarkers.length; i++) {
+			var mLocation = self.locationsMarkers[i];
 			// first check if the item matches states or all states
-			if (places[i].state == self.selectedState() || 
+			if (mLocation.state == self.selectedState() || 
 				'(All)' == self.selectedState()) {
 				// then check if the search box matches the name
-				if (places[i].name.toLowerCase().includes(
-					this.query().toLowerCase())) {
-					result.push(places[i]);
+				if (mLocation.name.toLowerCase().includes(
+					self.query().toLowerCase())) {
+					result.push(mLocation);
 					self.locationsMarkers[i].setVisible(true);
 				} else {
 					self.locationsMarkers[i].setVisible(false);
@@ -101,12 +112,13 @@ function mapViewModel() {
 		}
 		return result();
 	}, this);
-};
+
+}
 
 
 function runApp() {
 	ko.applyBindings(new mapViewModel());
-};
+}
 
 
 // hamburger icon in nav collapses sidebar
