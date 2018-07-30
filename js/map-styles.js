@@ -9,10 +9,10 @@ var mapStyles = [
                 "hue": "#76aee3"
             },
             {
-                "saturation": 38
+                "saturation": 15
             },
             {
-                "lightness": -11
+                "lightness": -15
             },
             {
                 "visibility": "on"
