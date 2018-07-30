@@ -17,7 +17,7 @@ var Location = function(data) {
 
 function mapViewModel() {
 	var self = this;
-	
+
 	// generate an array of Location ko observables
 	this.locationsList = ko.observableArray([]);
 		places.forEach(function(item) {
@@ -47,14 +47,14 @@ function mapViewModel() {
 			// wikipedia API search + timeout
 			var searchName = marker.name+' National Park';
 			var wikiRequestTimeout = setTimeout(function() {
-		        console.log("Failed to get wikipedia resources prior to timeout.");
+		        console.log("Failed to get wiki resources before timeout.");
 		    }, 5000);
 
 			// wikipedia ajax request, generates wiki links
 			$.ajax({
 		        url: "https://en.wikipedia.org/w/api.php",
 		        data: {
-		            "action": "opensearch",            
+		            "action": "opensearch",
 		            "format": "json",
 		            "search": searchName,
 		            "rvprop": "content"
@@ -63,19 +63,19 @@ function mapViewModel() {
 		        type: 'POST',
 		        headers: { 'Api-User-Agent': 'Example/1.0' },
 		        success: function( jsondata ) {
-		        	var wikiBlurb = jsondata[2][0];
-		        	self.wikiContent += '<hr><div>'+wikiBlurb+'</div>'+
+		        	var wBlurb = jsondata[2][0];
+		        	self.wContent += '<hr><div>'+wBlurb+'</div>'+
 		        		'<div><hr><strong>Wikipedia Links:</strong></div><ol>';
 
 		            for (j=0; j< jsondata[1].length; j++) {
-		                var wikiTitle = jsondata[1][j];
-		             	var wikiUrl = jsondata[3][j];
-		                self.wikiContent += '<li class="wiki">'+
-		                    '<a target="_blank" href="'+wikiUrl+'">'+wikiTitle+'</a>'+
-		                    '</li>';
+		                var wTitle = jsondata[1][j];
+		             	var wUrl = jsondata[3][j];
+		                self.wContent += '<li class="wiki">'+
+		                    '<a target="_blank" href="'+wUrl+'">'
+		                    +wTitle+'</a></li>';
 		        	};
-		        	self.wikiContent +='</ol>';
-		        	infowindow.setContent(self.infowindowTitle + self.wikiContent);		           
+		        	self.wContent +='</ol>';
+		        	infowindow.setContent(self.infowindowTitle + self.wContent);
 		        	clearTimeout(wikiRequestTimeout);
 		        }
 		    }).fail(function() {
@@ -83,7 +83,7 @@ function mapViewModel() {
                 alert("Failed to get wikipedia resources prior to timeout.");
 			});
 			this.infowindowTitle = '<h6>'+searchName+'</h6>';
-			this.wikiContent = '';
+			this.wContent = '';
 
 			infowindow.open(map, marker);
 			infowindow.addListener('closeclick', function() {
@@ -92,7 +92,7 @@ function mapViewModel() {
 		}
 	};
 
-	// KO clicks call makeMarker for the filteredList links	
+	// KO clicks call makeMarker for the filteredList links
 	this.makeMarker = function() {
         self.populateInfoWindow(this, self.largeInfoWindow);
         this.setAnimation(google.maps.Animation.DROP);
@@ -144,20 +144,16 @@ function mapViewModel() {
 
 		for (i=0; i<self.locationsMarkers.length; i++) {
 			var mLocation = self.locationsMarkers[i];
-			// first check if the item matches states or all states
-			if (mLocation.state == self.selectedState() || 
-				'(All)' == self.selectedState()) {
-				// then check if the search box matches the name
-				if (mLocation.name.toLowerCase().includes(
-					self.query().toLowerCase())) {
+			// check if the item matches one or all states + fuzzy search
+			if ((mLocation.state == self.selectedState() ||
+				'(All)' == self.selectedState()) &&
+				mLocation.name.toLowerCase().
+				includes(self.query().toLowerCase())) {
 					result.push(mLocation);
 					self.locationsMarkers[i].setVisible(true);
-				} else {
-					self.locationsMarkers[i].setVisible(false);
-					}
 			} else {
 				self.locationsMarkers[i].setVisible(false);
-			}
+			}		
 		}
 		return result();
 	}, this);
@@ -165,7 +161,8 @@ function mapViewModel() {
 
 // google maps error
 function googMapsError() {
-    alert('Google Maps could not load properly. Please check the API request URL and parameters.');
+    alert('Google Maps could not load properly.'+
+    	'Please check the API request URL and parameters.');
 }
 
 // google maps callback runs runApp
