@@ -63,23 +63,27 @@ function mapViewModel() {
 		        type: 'POST',
 		        headers: { 'Api-User-Agent': 'Example/1.0' },
 		        success: function( jsondata ) {
-		           for (j=0; j< jsondata[1].length; j++) {
+		        	var wikiBlurb = jsondata[2][0];
+		        	self.wikiContent += '<hr><div>'+wikiBlurb+'</div>'+
+		        		'<div><hr><strong>Wikipedia Links:</strong></div><ol>';
+
+		            for (j=0; j< jsondata[1].length; j++) {
 		                var wikiTitle = jsondata[1][j];
 		             	var wikiUrl = jsondata[3][j];
 		                self.wikiContent += '<li class="wiki">'+
 		                    '<a target="_blank" href="'+wikiUrl+'">'+wikiTitle+'</a>'+
 		                    '</li>';
-		           };
-		           self.wikiContent +='</ul>';
-		           infowindow.setContent(self.infowindowTitle + self.wikiContent);		           
-		           clearTimeout(wikiRequestTimeout);
+		        	};
+		        	self.wikiContent +='</ol>';
+		        	infowindow.setContent(self.infowindowTitle + self.wikiContent);		           
+		        	clearTimeout(wikiRequestTimeout);
 		        }
 		    }).fail(function() {
 		    	infowindow.setContent(self.infowindowTitle);
                 alert("Failed to get wikipedia resources prior to timeout.");
 			});
 			this.infowindowTitle = '<h6>'+searchName+'</h6>';
-			this.wikiContent = '<div><hr><strong>Wikipedia Links:</strong></div>';
+			this.wikiContent = '';
 
 			infowindow.open(map, marker);
 			infowindow.addListener('closeclick', function() {
@@ -88,8 +92,8 @@ function mapViewModel() {
 		}
 	};
 
-	// KO clicks call populateMarker for the filteredList links	
-	this.populateMarker = function() {
+	// KO clicks call makeMarker for the filteredList links	
+	this.makeMarker = function() {
         self.populateInfoWindow(this, self.largeInfoWindow);
         this.setAnimation(google.maps.Animation.DROP);
 	};
@@ -102,7 +106,9 @@ function mapViewModel() {
                 styles: mapStyles
             });
 		
-		this.largeInfoWindow = new google.maps.InfoWindow();
+		this.largeInfoWindow = new google.maps.InfoWindow({
+			maxWidth: 240
+		});
 
 		for (i=0; i<places.length; i++) {
 			var iLat = places[i].lat*1;
@@ -155,7 +161,11 @@ function mapViewModel() {
 		}
 		return result();
 	}, this);
+}
 
+// google maps error
+function googMapsError() {
+    alert('Google Maps could not load properly. Please check the API request URL and parameters.');
 }
 
 // google maps callback runs runApp

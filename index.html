@@ -7,7 +7,7 @@
 
     <meta name="Neighborhood Map Project | Jing Sun">
 
-    <title>Udacity Map Project | US National Parks</title>
+    <title>US National Parks | Udacity Map Project</title>
 
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet"> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" type="text/css">
@@ -33,7 +33,7 @@
 
                 <ul class="list-group" data-bind="foreach: filteredList" id="search-results">
                     <a href="#">
-                        <li class="list-group-item" data-bind="text: name, click: $parent.populateMarker"></li>
+                        <li class="list-group-item" data-bind="text: name, click: $parent.makeMarker"></li>
                     </a>
                 </ul>
             </div>
@@ -41,7 +41,7 @@
             <!-- Map Pane -->
             <div class="col" id="map-pane">
                 <nav class="navbar navbar-light bg-light" id="nav-header">
-                    <a href="#">
+                    <a href="#" id="show-sidebar">
                         <img src="img/ham.svg" alt="img" id="hamburger-icon">
                     </a>
                 </nav>
@@ -59,7 +59,8 @@
     <script src="js/script.js"></script>
     
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAa60YjfQ8skiVYUcLUI7tVJKTQPsUV_Og&callback=runApp">
+        src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAa60YjfQ8skiVYUcLUI7tVJKTQPsUV_Og&callback=runApp"
+        onerror="googMapsError()">
     </script>
 </body>
 </html>
