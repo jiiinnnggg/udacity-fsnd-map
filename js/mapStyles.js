@@ -1,6 +1,6 @@
 // map style from https://snazzymaps.com/style/75/shade-of-green
 
-mapStyles = [
+var mapStyles = [
     {
         "featureType": "water",
         "elementType": "all",
