@@ -1,4 +1,11 @@
 
+// hamburger icon in nav collapses sidebar
+$(document).ready(function () {
+    $('#hamburger-icon').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+});
+
 // the Location function generates a ko observable from data.js item
 var Location = function(data) {
 	this.name = ko.observable(data.name);
@@ -35,8 +42,45 @@ function mapViewModel() {
 	this.populateInfoWindow = function(marker, infowindow) {
 		if (infowindow.marker != marker) {
 			infowindow.setContent('');
-			infowindow.marker = marker;			
-			infowindow.setContent('<h6>'+marker.name+' National Park</h6>');
+			infowindow.marker = marker;
+
+			// wikipedia API search + timeout
+			var searchName = marker.name+' National Park';
+			var wikiRequestTimeout = setTimeout(function() {
+		        console.log("Failed to get wikipedia resources prior to timeout.");
+		    }, 5000);
+
+			// wikipedia ajax request, generates wiki links
+			$.ajax({
+		        url: "https://en.wikipedia.org/w/api.php",
+		        data: {
+		            "action": "opensearch",            
+		            "format": "json",
+		            "search": searchName,
+		            "rvprop": "content"
+		        },
+		        dataType: 'jsonp',
+		        type: 'POST',
+		        headers: { 'Api-User-Agent': 'Example/1.0' },
+		        success: function( jsondata ) {
+		           for (j=0; j< jsondata[1].length; j++) {
+		                var wikiTitle = jsondata[1][j];
+		             	var wikiUrl = jsondata[3][j];
+		                self.wikiContent += '<li class="wiki">'+
+		                    '<a target="_blank" href="'+wikiUrl+'">'+wikiTitle+'</a>'+
+		                    '</li>';
+		           };
+		           self.wikiContent +='</ul>';
+		           infowindow.setContent(self.infowindowTitle + self.wikiContent);		           
+		           clearTimeout(wikiRequestTimeout);
+		        }
+		    }).fail(function() {
+		    	infowindow.setContent(self.infowindowTitle);
+                alert("Failed to get wikipedia resources prior to timeout.");
+			});
+			this.infowindowTitle = '<h6>'+searchName+'</h6>';
+			this.wikiContent = '<div><hr><strong>Wikipedia Links:</strong></div>';
+
 			infowindow.open(map, marker);
 			infowindow.addListener('closeclick', function() {
 				infowindow.marker = null;
@@ -118,10 +162,3 @@ function mapViewModel() {
 function runApp() {
 	ko.applyBindings(new mapViewModel());
 }
-
-// hamburger icon in nav collapses sidebar
-$(document).ready(function () {
-    $('#hamburger-icon').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
-});
